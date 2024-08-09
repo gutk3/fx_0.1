@@ -53,9 +53,8 @@ TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
 
-uint16_t in_1[BUFSIZE],  out_1[BUFSIZE],  input_1, in_calc[BUFSIZE/2], out_calc[BUFSIZE/2], *input_pointer, *output_pointer,
-distortion_level=0;
-uint8_t in_flag=0, out_flag=0, calc_flag=1, adc_half_flag=0, adc_cplt_flag=0, dac_half_flag=0, dac_cplt_flag=0;
+uint16_t in_1[BUFSIZE],  out_1[BUFSIZE],  input_1, in_calc[BUFSIZE/2], out_calc[BUFSIZE/2], distortion_level=0;
+
 char disp_txt[4];
 
 /* USER CODE END PV */
@@ -138,24 +137,7 @@ int main(void)
 
 
 
-/*
-	  if(calc_flag==0){
 
-
-	  		  for(int i=0; i<BUFSIZE/2; i++){
-	  			in_calc[i]=out_calc[i];
-
-	  		  }
-
-
-
-
-
-	  		  calc_flag=1;
-	  	  }
-
-
-*/
 
 
     /* USER CODE END WHILE */
@@ -483,19 +465,6 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc){
 
 
 
-
-/*
-	if(in_flag==0 && calc_flag==1){
-
-		for(int i=0; i<BUFSIZE/2; i++){
-			in_calc[i]=in_1[i];
-		}
-
-		in_flag=1, calc_flag=0;
-	}
-*/
-
-
 }
 
 
@@ -510,37 +479,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 
 
 
-
-
-
-
-
-	/*
-	for(int i=0; i<BUFSIZE; i++){
-
-			if(in_1[i]>2400){
-				out_1[i]=2400;
-			}else if(in_1[i]<1400){
-				out_1[i]=1400;
-			}else{
-				out_1[i]=in_1[i];
-			}
-
-	}
-	*/
-
-/*
-	if(in_flag==1 && calc_flag==1){
-
-		for(int i=0; i<BUFSIZE; i++){
-			in_calc[i]=in_1[i+BUFSIZE];
-
-		}
-
-		in_flag=0, calc_flag=0;
-	}
-*/
-
 }
 
 
@@ -551,42 +489,12 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 
 
 
-
-/*
-
-
-	if(out_flag==0 && calc_flag==1){
-
-
-		for(int i=0; i<BUFSIZE/2; i++){
-			out_1[i] = out_calc[i];
-		}
-
-		out_flag=1;
-
-	}
-*/
 //}
 
 //void HAL_DACEx_ConvCpltCallbackCh2(DAC_HandleTypeDef *hdac){
 
 
 
-
-
-/*
-
-
-	if(out_flag==1 && calc_flag==1){
-
-		for(int i=0; i<BUFSIZE; i++){
-			out_1[i+BUFSIZE] = out_calc[i];
-		}
-
-		out_flag=0;
-
-	}
-*/
 //}
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
