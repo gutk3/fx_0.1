@@ -33,6 +33,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define BUFSIZE 4096
+#define ADC_CENT_VAL 2048
 
 /* USER CODE END PD */
 
@@ -68,7 +69,7 @@ static void MX_TIM3_Init(void);
 static void MX_DAC_Init(void);
 static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
-void distortion(uint16_t* input, uint16_t* output, uint16_t b_size, uint16_t drive_level);
+void rectangle(uint16_t* input, uint16_t* output, uint16_t b_size, uint16_t drive_level);
 void set_character(char symbol);
 void set_position(uint8_t pos_number);
 void write_display(char text[]);
@@ -460,7 +461,7 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc){
 
 
 
-	distortion((uint16_t*) in_1, (uint16_t*) out_1, BUFSIZE/2, distortion_level);
+	rectangle((uint16_t*) in_1, (uint16_t*) out_1, BUFSIZE/2, distortion_level);
 
 
 
@@ -473,7 +474,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
 
 
-	distortion((uint16_t*) (in_1+BUFSIZE/2), (uint16_t*) (out_1+BUFSIZE/2), BUFSIZE/2, distortion_level);
+	rectangle((uint16_t*) (in_1+BUFSIZE/2), (uint16_t*) (out_1+BUFSIZE/2), BUFSIZE/2, distortion_level);
 
 
 
@@ -515,7 +516,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 
 
-void distortion(uint16_t* input, uint16_t* output, uint16_t b_size, uint16_t drive_level){
+void rectangle(uint16_t* input, uint16_t* output, uint16_t b_size, uint16_t drive_level){
 
 
 	uint16_t min, max, i=0, drive=drive_level;
@@ -539,9 +540,9 @@ void distortion(uint16_t* input, uint16_t* output, uint16_t b_size, uint16_t dri
 
 	for(uint16_t j=0; j<b_size; j++){
 
-		if(input[j]>(2048+drive)){
+		if(input[j]>(ADC_CENT_VAL+drive)){
 			output[j]=max;
-		}else if(input[j]<(2048-drive)){
+		}else if(input[j]<(ADC_CENT_VAL-drive)){
 			output[j]=min;
 		}else{
 			output[j]=input[j];
